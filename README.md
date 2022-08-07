@@ -17,4 +17,5 @@ go build -o kafkaSend kafka.go send.go
 ./kafkaListen -?
 
 cat thisfile | ./kafakSend -conn remote-kafka-server:9092 -topic mytopic
+
 ./kafkaListen -conn remote-kafak-server:9092 -topic  (messages will be dumped to screen)
