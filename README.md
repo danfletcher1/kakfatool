@@ -14,6 +14,7 @@ go build -o kafkaSend kafka.go send.go
 
 # Use
 ./kafakSend -?
+
 ./kafkaListen -?
 
 cat thisfile | ./kafakSend -conn remote-kafka-server:9092 -topic mytopic
