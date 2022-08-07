@@ -1,0 +1,10 @@
+FROM golang:1.16.4
+
+WORKDIR /go/src/kafkaTools
+COPY . .
+RUN export GIT_COMMIT=$(git rev-list -1 HEAD)
+RUN export GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+RUN export GIT_REPO=$(git config --get remote.origin.url)
+#RUN go get ./...
+RUN CGO_ENABLED=0 go build -mod=readonly --trimpath -ldflags "-X main.GitCommit=$GIT_COMMIT -X main.GitBranch=$GIT_BRANCH -X main.GitRepo=$GIT_REPO" -o kafkaListen kafka.go listen.go
+RUN CGO_ENABLED=0 go build -mod=readonly --trimpath -ldflags "-X main.GitCommit=$GIT_COMMIT -X main.GitBranch=$BIT_BRANCH -X main.GitRepo=$GIT_REPO" -o kafkaSend kafka.go send.go
