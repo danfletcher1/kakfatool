@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+set -e
+
+export GIT_SSL_NO_VERIFY=true
+REG='_docker_registry_here_'
+BRANCH=$(git rev-parse --abbrev-ref HEAD)
+TS=$(date '+%Y.%m.%d.%H%M')
+if [ "$BRANCH" = "develop" ]; then
+    VER="lab.${TS}"
+elif [ "$BRANCH" = "master" ]; then
+    VER="release.${TS}"
+else
+    VER="${BRANCH//[-.\/ ]/_}.${TS}"
+fi
+
+echo "Version: $TAG"
+
+echo "Building binary for kafkaTools:${VER}"
+#git submodule update --init --recursive
+docker build -t kafkatools -f Dockerfile.build .
+
+echo "Exporting binary to kafkaTools"
+docker run --name kafkatools kafkatools 
+docker cp kafkatools:/go/src/kafkaTools/kafkaListen kafkaListen
+docker cp kafkatools:/go/src/kafkaTools/kafkaSend kafkaSend
+docker stop kafkatools
+docker rm kafkatools
+
+
+echo "Building docker image: kafkaTools:${VER}"
+docker build -t kafkatools:${VER} -f Dockerfile.deploy .
+docker tag "kafkatools:${VER}" "${REG}/kafkatools:latest"
+docker tag "kafkatools:${VER}" "${REG}/kafkatools:${VER}"
+docker push "${REG}/kafkatools:latest"
+docker push "${REG}/kafkatools:${VER}"
+
+echo "Pushing git tag: ${VER}"
+git tag -a ${VER} -m "Build ${VER}"
+git push --tags
