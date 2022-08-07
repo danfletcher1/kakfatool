@@ -1,0 +1,4 @@
+FROM scratch
+
+ADD kafkaListen /
+ADD kafkaSend /
