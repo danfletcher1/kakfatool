@@ -1,7 +1,7 @@
 # kakfatool
 Interact with Kafak using this command line tool. You can read/write a file or use stdin/stdout.
 I find this very useful in debugging to see the messages that are in the queue, and to send in messages.
-I know there are versions like this already provided by the kafka team, but its in java an thusly heavyweight. This compile to an 8.2mb binaries, and you don't need to install anything. You can build using containers if you wish not to install go. And go can cross compile to another OS. 
+I know there are versions like this already provided by the kafka team, but its in java an thusly heavyweight. This compiles to 8.2mb binaries, and you don't need to install anything. You can build using containers if you do not wish to install go. Go can cross compile to another OS. 
 
 
 # Build
